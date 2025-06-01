@@ -1,31 +1,7 @@
 import { useState, useEffect } from "react";
-import styled from "@emotion/styled/macro";
-
 import GifPicker from "./components/GifPicker";
 import YearView from "./components/YearView";
 import type { DailyGifs, Image } from "./types";
-
-const StyledHeader = styled.header`
-  font-family: "Luckiest Guy", cursive;
-  text-align: center;
-  margin: 3rem auto;
-  h1 {
-    font-size: 3rem;
-  }
-`;
-
-const StyledContainer = styled.div`
-  min-height: 50vh;
-`;
-
-const StyledFooter = styled.footer`
-  text-align: center;
-  margin-top: 2rem;
-  a {
-    color: currentColor;
-    font-weight: bold;
-  }
-`;
 
 const App = () => {
 	const [dailyGifs, setDailyGifs] = useState<DailyGifs>({});
@@ -54,10 +30,10 @@ const App = () => {
 
 	return (
 		<div>
-			<StyledHeader>
-				<h1>Have a gify day!</h1>
+			<header className="font-luckiest-guy text-center my-12">
+				<h1 className="text-5xl">Have a gify day!</h1>
 				<p>Your year in gifs...</p>
-			</StyledHeader>
+			</header>
 			{selectedDay && (
 				<GifPicker
 					selectedDay={selectedDay}
@@ -68,16 +44,17 @@ const App = () => {
 				/>
 			)}
 
-			<StyledContainer>
+			<div className="min-h-[50vh]">
 				<YearView dailyGifs={dailyGifs} onSelectedDay={setSelectedDay} />
-			</StyledContainer>
-			<StyledFooter>
+			</div>
+			<footer className="text-center mt-8">
 				<p>
 					Made with ♥ by{" "}
 					<a
 						href="https://sirlisko.com"
 						target="_blank"
 						rel="noopener noreferrer"
+						className="text-current font-bold"
 					>
 						Luca Lischetti (@sirLisko)
 					</a>
@@ -88,11 +65,12 @@ const App = () => {
 						href="https://giphy.com/"
 						target="_blank"
 						rel="noopener noreferrer"
+						className="text-current font-bold"
 					>
 						GIPHY
 					</a>
 				</p>
-			</StyledFooter>
+			</footer>
 		</div>
 	);
 };

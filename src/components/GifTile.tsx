@@ -7,8 +7,14 @@ interface Props {
 
 const GifTile = ({ gifObj, dynamic }: Props) =>
 	gifObj ? (
-		<div>
-			{dynamic && <img src={gifObj.gif.still} alt={gifObj.text} />}
+		<div className="relative">
+			{dynamic && (
+				<img
+					src={gifObj.gif.still}
+					alt={gifObj.text}
+					className="absolute inset-0 w-full h-full object-cover"
+				/>
+			)}
 			<video
 				key={gifObj.gif.gif}
 				title={gifObj.text}
@@ -16,6 +22,7 @@ const GifTile = ({ gifObj, dynamic }: Props) =>
 				autoPlay
 				muted
 				playsInline
+				className="w-full h-full object-cover"
 			>
 				<source src={gifObj.gif.gif} type="video/mp4" />
 			</video>

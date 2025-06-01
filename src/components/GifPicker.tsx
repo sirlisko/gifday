@@ -1,66 +1,8 @@
 import { Fragment, useState, useEffect, useRef } from "react";
-import styled from "@emotion/styled/macro";
-
-import theme from "../styles/theme.ts";
 import Modal from "./Modal.tsx";
 import GifTile from "./GifTile.tsx";
-
 import { getRandomGif } from "../utils/gifAPI.ts";
 import type { Image } from "../types.ts";
-
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-`;
-
-const StyledInput = styled.input`
-  border: 0;
-  border-bottom: 1px solid ${theme.colors.accent};
-  font-size: 2rem;
-  outline-color: ${theme.colors.accent};
-  padding: 0.25rem 1rem;
-  margin: 1rem auto;
-  width: calc(100% - 3.5rem);
-`;
-
-const StyledSearch = styled.button`
-  background: ${theme.colors.accent};
-  font-size: 1.5rem;
-  border: navajowhite;
-  border-radius: 50%;
-  color: white;
-  font-weight: bold;
-  height: 3rem;
-  width: 3rem;
-  margin-left: 0.5rem;
-  text-align: center;
-  padding: 0;
-`;
-
-const StyledOk = styled.button`
-  background: ${theme.colors.accent};
-  background: linear-gradient(
-    to right,
-    ${theme.colors.accent} 0%,
-    ${theme.colors.alternate} 80%,
-    ${theme.colors.alternate} 100%
-  );
-  color: #fff;
-  padding: 1rem 3rem;
-  text-transform: uppercase;
-  font-size: 1rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 5rem;
-  margin: 1rem auto;
-  display: block;
-  letter-spacing: 3px;
-  &:hover {
-    transform: scale(1.04);
-  }
-`;
 
 interface Props {
 	selectedDay?: string;
@@ -103,23 +45,30 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 			isModalOpen={Boolean(selectedDay)}
 			onClose={() => onClosePicker(selectedImg)}
 		>
-			<StyledContainer>
+			<div className="flex flex-col items-center">
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
 						return textInput.current?.value && getGif(textInput.current.value);
 					}}
+					className="flex items-center"
 				>
-					<StyledInput
+					<input
 						type="text"
 						name="what"
 						ref={textInput}
 						defaultValue={image?.text}
+						className="border-0 border-b border-accent text-3xl outline-accent py-1 px-4 mx-auto w-[calc(100%-3.5rem)]"
 					/>
-					<StyledSearch type="submit">yo!</StyledSearch>
+					<button
+						type="submit"
+						className="bg-accent text-2xl border-none rounded-full text-white font-bold h-12 w-12 ml-2 text-center p-0"
+					>
+						yo!
+					</button>
 				</form>
 				{error && (
-					<div style={{ textAlign: "center" }}>
+					<div className="text-center">
 						Ooops! Something went wrong :( <p>{error}</p>
 					</div>
 				)}
@@ -129,14 +78,18 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 						{!loading && (
 							<Fragment>
 								<GifTile gifObj={image} />
-								<StyledOk onClick={() => onClosePicker(image)}>
+								<button
+									type="button"
+									onClick={() => onClosePicker(image)}
+									className="bg-gradient-to-r from-accent to-alternate text-white py-4 px-12 uppercase text-base font-bold border-none rounded-full mx-auto block tracking-widest hover:scale-105 transition-transform"
+								>
 									You Got It!
-								</StyledOk>
+								</button>
 							</Fragment>
 						)}
 					</Fragment>
 				)}
-			</StyledContainer>
+			</div>
 		</Modal>
 	);
 };

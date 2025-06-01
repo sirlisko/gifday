@@ -14,14 +14,13 @@ Another idea could be serving static images and animating the gif on `hover` or 
 
 - WebApp scaffolded via [Vite](https://vite.dev)
 - Check the syntax and formatting of the JS, via [Biome](https://biomejs.dev/)
-- Style components with [Emotion](https://emotion.sh)
+- Styling with [Tailwind](https://tailwindcss.com/)
 - [Giphy APIS](https://developers.giphy.com/docs/)
 - Unit tests with [Jest](https://jestjs.io) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - Integration test with [Cypress](https://cypress.io)
 
 ### Improvements
 
-- Add a login system and the possibility to save your gifs, I'd go with [Firebase](https://firebase.google.com) with [rebase](https://github.com/tylermcginnis/re-base) (as done [here](https://github.com/sirlisko/been) WIP)
 - Proxy the API call in order not to expose the API key
 - Add a spinner while searching for GIF
 - Having a fallback for the videos
