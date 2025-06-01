@@ -16,7 +16,7 @@ Another idea could be serving static images and animating the gif on `hover` or 
 - Check the syntax and formatting of the JS, via [Biome](https://biomejs.dev/)
 - Styling with [Tailwind](https://tailwindcss.com/)
 - [Giphy APIS](https://developers.giphy.com/docs/)
-- Unit tests with [Jest](https://jestjs.io) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
+- Unit tests with [Vitest](https://vitest.dev) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - Integration test with [Cypress](https://cypress.io)
 
 ### Improvements

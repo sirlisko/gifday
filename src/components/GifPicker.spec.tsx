@@ -1,18 +1,21 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { vi } from "vitest";
 
 import GifPicker from "./GifPicker";
 
-jest.mock("utils/gifAPI", () => ({
+vi.mock("../utils/gifAPI.ts", () => ({
 	getRandomGif: () =>
-		new Promise((resolve) =>
-			resolve({ gif: "foobar.mp4", still: "foobar.img" }),
-		),
+		new Promise((resolve) => {
+			setTimeout(() => {
+				resolve({ gif: "foobar.mp4", still: "foobar.img" });
+			}, 10);
+		}),
 }));
 
 describe("GifPicker Component", () => {
 	const props = {
 		selectedDay: "0-0",
-		onClosePicker: jest.fn(),
+		onClosePicker: vi.fn(),
 	};
 
 	it("should fetch a new gif if form submitted", async () => {

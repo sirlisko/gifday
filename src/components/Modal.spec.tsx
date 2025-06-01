@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import React from "react";
+import { vi } from "vitest";
 
 import Modal from "./Modal";
 
 describe("Modal Component", () => {
 	const props = {
 		isModalOpen: true,
-		onClose: jest.fn(),
+		onClose: vi.fn(),
 	};
 
 	it("should render properly", () => {

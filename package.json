@@ -3,15 +3,16 @@
 	"version": "0.1.0",
 	"private": true,
 	"license": "MIT",
+	"type": "module",
 	"scripts": {
 		"dev": "vite",
 		"start": "vite",
 		"build": "tsc -b && vite build",
 		"test": "npm run lint && npm run unit && npm run integration",
-		"unit": "react-scripts test --env=jsdom",
+		"unit": "vitest",
 		"lint": "biome check .",
 		"format": "biome format --write .",
-		"test:coverage": "react-scripts test --env=jsdom --coverage",
+		"test:coverage": "vitest run --coverage",
 		"integration": "start-server-and-test start http://localhost:3000 cy:run",
 		"cy:run": "cypress run"
 	},
@@ -24,10 +25,9 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
-		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^13.3.0",
-		"@testing-library/user-event": "^14.4.3",
-		"@types/jest": "^27.5.2",
+		"@testing-library/jest-dom": "^6.6.3",
+		"@testing-library/react": "^16.3.0",
+		"@testing-library/user-event": "^14.6.1",
 		"@types/lodash.times": "^4.3.7",
 		"@types/node": "^22.15.29",
 		"@types/react": "^19.1.6",
@@ -35,15 +35,15 @@
 		"@vitejs/plugin-react": "^4.5.0",
 		"autoprefixer": "10.4.21",
 		"cypress": "^10.6.0",
-		"jest-fetch-mock": "^3.0.3",
+		"jsdom": "^26.1.0",
 		"mockdate": "^3.0.5",
 		"postcss": "8.5.4",
 		"start-server-and-test": "^1.14.0",
 		"tailwindcss": "3.4.1",
 		"typescript": "~5.8.3",
-		"vite": "^6.3.5"
+		"vite": "^6.3.5",
+		"vitest": "^3.1.4"
 	},
-	"browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
 	"overrides": {
 		"react-modal2": {
 			"react": "^19.1.0",

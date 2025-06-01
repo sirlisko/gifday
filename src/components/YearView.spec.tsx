@@ -1,17 +1,17 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import mockdate from "mockdate";
-import React from "react";
+import { vi } from "vitest";
 
 import YearView from "./YearView";
 
 describe("YearView Component", () => {
 	const props = {
 		dailyGifs: {},
-		onSelectedDay: jest.fn(),
+		onSelectedDay: vi.fn(),
 	};
 
 	afterEach(() => {
-		props.onSelectedDay.mockReset();
+		vi.clearAllMocks();
 	});
 
 	it("should render the correct number of days if not leap year", () => {

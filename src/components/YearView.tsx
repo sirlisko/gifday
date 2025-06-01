@@ -25,7 +25,6 @@ export const YearView = ({ dailyGifs, onSelectedDay }: Props) => {
 							const index = `${day}-${monthIndex}`;
 							return (
 								<td key={index} className="m-0 p-0">
-									{/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
 									<button
 										type="button"
 										onClick={() => onSelectedDay(index)}

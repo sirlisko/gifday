@@ -1,4 +1,4 @@
-import { getRandomGif } from "utils/gifAPI";
+import { getRandomGif } from "./gifAPI.ts";
 
 const unmockedFetch = global.fetch;
 
