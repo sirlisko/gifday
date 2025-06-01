@@ -53,26 +53,26 @@ const StyledCloseButton = styled("button")`
 ReactModal.getApplicationElement = () => document.getElementById("root");
 
 interface Props {
-  isModalOpen?: boolean;
-  onClose: () => void;
-  children: React.ReactElement;
+	isModalOpen?: boolean;
+	onClose: () => void;
+	children: React.ReactElement;
 }
 
 const Modal = ({ isModalOpen, onClose, children }: Props) => {
-  if (!isModalOpen) {
-    return null;
-  }
-  return (
-    <ReactModal
-      backdropClassName="modal__backdrop"
-      modalClassName="modal"
-      onClose={onClose}
-    >
-      <Global styles={StyledModal} />
-      <StyledCloseButton onClick={onClose}>×</StyledCloseButton>
-      <div>{children}</div>
-    </ReactModal>
-  );
+	if (!isModalOpen) {
+		return null;
+	}
+	return (
+		<ReactModal
+			backdropClassName="modal__backdrop"
+			modalClassName="modal"
+			onClose={onClose}
+		>
+			<Global styles={StyledModal} />
+			<StyledCloseButton onClick={onClose}>×</StyledCloseButton>
+			<div>{children}</div>
+		</ReactModal>
+	);
 };
 
 export default Modal;
