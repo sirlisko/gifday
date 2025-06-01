@@ -6,7 +6,7 @@ import Modal from "components/Modal";
 import GifTile from "components/GifTile";
 
 import { getRandomGif } from "utils/gifAPI";
-import { Image } from "types";
+import type { Image } from "types";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -63,82 +63,82 @@ const StyledOk = styled.button`
 `;
 
 interface Props {
-  selectedDay?: string;
-  selectedImg?: Image;
-  onClosePicker: (image?: Image) => void;
+	selectedDay?: string;
+	selectedImg?: Image;
+	onClosePicker: (image?: Image) => void;
 }
 
 const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
-  const [image, setImage] = useState(selectedImg);
-  const [error, setError] = useState<string>();
-  const [loading, setLoading] = useState<boolean>();
-  const getGif = (text: string) => {
-    setLoading(true);
-    getRandomGif(text)
-      .then((gif) => {
-        if (!gif) {
-          return setError("we didn't find your gif");
-        }
-        setError(undefined);
-        setImage({ text, gif });
-        setLoading(false);
-      })
-      .catch(() => {
-        setError("Please try again later");
-        setLoading(false);
-      });
-  };
+	const [image, setImage] = useState(selectedImg);
+	const [error, setError] = useState<string>();
+	const [loading, setLoading] = useState<boolean>();
+	const getGif = (text: string) => {
+		setLoading(true);
+		getRandomGif(text)
+			.then((gif) => {
+				if (!gif) {
+					return setError("we didn't find your gif");
+				}
+				setError(undefined);
+				setImage({ text, gif });
+				setLoading(false);
+			})
+			.catch(() => {
+				setError("Please try again later");
+				setLoading(false);
+			});
+	};
 
-  const textInput = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    textInput && textInput.current?.focus();
-  }, []);
+	const textInput = useRef<HTMLInputElement>(null);
+	useEffect(() => {
+		textInput?.current?.focus();
+	}, []);
 
-  if (!selectedDay) {
-    return null;
-  }
+	if (!selectedDay) {
+		return null;
+	}
 
-  return (
-    <Modal
-      isModalOpen={Boolean(selectedDay)}
-      onClose={() => onClosePicker(selectedImg)}
-    >
-      <StyledContainer>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            return textInput.current?.value && getGif(textInput.current.value);
-          }}
-        >
-          <StyledInput
-            type="text"
-            name="what"
-            ref={textInput}
-            defaultValue={image && image.text}
-          />
-          <StyledSearch type="submit">yo!</StyledSearch>
-        </form>
-        {error && (
-          <div style={{ textAlign: "center" }}>
-            Ooops! Something went wrong :( <p>{error}</p>
-          </div>
-        )}
-        {loading && <span>loading...</span>}
-        {image && (
-          <Fragment>
-            {!loading && (
-              <Fragment>
-                <GifTile gifObj={image} />
-                <StyledOk onClick={() => onClosePicker(image)}>
-                  You Got It!
-                </StyledOk>
-              </Fragment>
-            )}
-          </Fragment>
-        )}
-      </StyledContainer>
-    </Modal>
-  );
+	return (
+		<Modal
+			isModalOpen={Boolean(selectedDay)}
+			onClose={() => onClosePicker(selectedImg)}
+		>
+			<StyledContainer>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						return textInput.current?.value && getGif(textInput.current.value);
+					}}
+				>
+					<StyledInput
+						type="text"
+						name="what"
+						ref={textInput}
+						defaultValue={image?.text}
+					/>
+					<StyledSearch type="submit">yo!</StyledSearch>
+				</form>
+				{error && (
+					<div style={{ textAlign: "center" }}>
+						Ooops! Something went wrong :( <p>{error}</p>
+					</div>
+				)}
+				{loading && <span>loading...</span>}
+				{image && (
+					<Fragment>
+						{!loading && (
+							<Fragment>
+								<GifTile gifObj={image} />
+								<StyledOk onClick={() => onClosePicker(image)}>
+									You Got It!
+								</StyledOk>
+							</Fragment>
+						)}
+					</Fragment>
+				)}
+			</StyledContainer>
+		</Modal>
+	);
 };
 
 export default GifPicker;

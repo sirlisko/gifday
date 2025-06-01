@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "types";
+import type { Image } from "types";
 
 interface Props {
   gifObj: Image;

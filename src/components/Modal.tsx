@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import styled from "@emotion/styled/macro";
 import ReactModal from "react-modal2";
 import { Global, css } from "@emotion/react";

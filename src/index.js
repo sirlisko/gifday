@@ -1,4 +1,3 @@
-import * as serviceWorker from "serviceWorker";
 import React from "react";
 import { createRoot } from "react-dom/client";
 
@@ -11,17 +10,15 @@ const root = createRoot(container);
 root.render(<App />);
 
 const render = (Component) => {
-  root.render(<Component />);
+	root.render(<Component />);
 };
 
 render(App);
 
 if (module.hot) {
-  module.hot.accept("./App", () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const NextApp = require("./App").default;
-    render(NextApp);
-  });
+	module.hot.accept("./App", () => {
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		const NextApp = require("./App").default;
+		render(NextApp);
+	});
 }
-
-serviceWorker.unregister();

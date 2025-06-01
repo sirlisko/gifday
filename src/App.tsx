@@ -3,7 +3,7 @@ import styled from "@emotion/styled/macro";
 
 import GifPicker from "components/GifPicker";
 import YearView from "components/YearView";
-import { DailyGifs, Image } from "types";
+import type { DailyGifs, Image } from "types";
 
 const StyledHeader = styled.header`
   font-family: "Luckiest Guy", cursive;

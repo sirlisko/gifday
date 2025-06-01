@@ -1,5 +1,5 @@
-describe("The Web App", function () {
-  it("successfully selected a gif", function () {
+describe("The Web App", () => {
+  it("successfully selected a gif", () => {
     cy.visit("http://localhost:3000");
     cy.get('[role="button"]').first().click();
     cy.get('input[type="text"]').type("pizza");
@@ -7,7 +7,7 @@ describe("The Web App", function () {
     cy.get('[class*="modal"] video');
   });
 
-  it.skip("successfully show the gif on hover an img", function () {
+  it.skip("successfully show the gif on hover an img", () => {
     cy.visit("http://localhost:3000");
     cy.get('[class*="StyledDay"]').first().click();
     cy.get('input[type="text"]').type("pizza");
