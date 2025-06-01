@@ -12,7 +12,7 @@ Another idea could be serving static images and animating the gif on `hover` or 
 
 ### The stack
 
-- WebApp scaffolded via [Create React App](https://github.com/facebook/create-react-app)
+- WebApp scaffolded via [Vite](https://vite.dev)
 - Check the syntax and formatting of the JS, via [Biome](https://biomejs.dev/)
 - Style components with [Emotion](https://emotion.sh)
 - [Giphy APIS](https://developers.giphy.com/docs/)

@@ -3,7 +3,7 @@ import styled from "@emotion/styled/macro";
 import ReactModal from "react-modal2";
 import { Global, css } from "@emotion/react";
 
-import theme from "styles/theme";
+import theme from "../styles/theme.ts";
 
 const StyledModal = css`
   .modal {

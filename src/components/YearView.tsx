@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { getDaysInMonth } from "date-fns";
 import times from "lodash.times";
 import styled from "@emotion/styled/macro";
 
-import theme from "styles/theme";
-import GifTile from "components/GifTile";
-import type { DailyGifs } from "types";
+import theme from "../styles/theme.ts";
+import GifTile from "./GifTile.jsx";
+import type { DailyGifs } from "../types.js";
 
 const StyledTable = styled.table`
   margin: 0 auto;

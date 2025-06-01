@@ -1,5 +1,4 @@
-import React from "react";
-import type { Image } from "types";
+import type { Image } from "../types.ts";
 
 interface Props {
 	gifObj: Image;

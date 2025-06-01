@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled/macro";
 
-import GifPicker from "components/GifPicker";
-import YearView from "components/YearView";
-import type { DailyGifs, Image } from "types";
+import GifPicker from "./components/GifPicker";
+import YearView from "./components/YearView";
+import type { DailyGifs, Image } from "./types";
 
 const StyledHeader = styled.header`
   font-family: "Luckiest Guy", cursive;

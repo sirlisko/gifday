@@ -1,12 +1,12 @@
-import React, { Fragment, useState, useEffect, useRef } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled/macro";
 
-import theme from "styles/theme";
-import Modal from "components/Modal";
-import GifTile from "components/GifTile";
+import theme from "../styles/theme.ts";
+import Modal from "./Modal.tsx";
+import GifTile from "./GifTile.tsx";
 
-import { getRandomGif } from "utils/gifAPI";
-import type { Image } from "types";
+import { getRandomGif } from "../utils/gifAPI.ts";
+import type { Image } from "../types.ts";
 
 const StyledContainer = styled.div`
   display: flex;
