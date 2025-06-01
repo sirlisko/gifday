@@ -17,7 +17,6 @@ render(App);
 
 if (module.hot) {
 	module.hot.accept("./App", () => {
-		// eslint-disable-next-line @typescript-eslint/no-var-requires
 		const NextApp = require("./App").default;
 		render(NextApp);
 	});

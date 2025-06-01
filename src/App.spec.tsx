@@ -8,7 +8,6 @@ import { act } from "react-dom/test-utils";
 it("renders without crashing", () => {
 	const div = document.createElement("div");
 	const root = createRoot(div);
-	// eslint-disable-next-line testing-library/no-unnecessary-act
 	act(() => {
 		root.render(<App />);
 		root.unmount();
