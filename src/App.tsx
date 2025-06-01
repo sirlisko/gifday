@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import GifPicker from "./components/GifPicker";
 import YearView from "./components/YearView";
 import type { DailyGifs, Image } from "./types";

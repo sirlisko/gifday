@@ -1,8 +1,8 @@
-import { Fragment, useState, useEffect, useRef } from "react";
-import Modal from "./Modal.tsx";
-import GifTile from "./GifTile.tsx";
-import { getRandomGif } from "../utils/gifAPI.ts";
+import { Fragment, useEffect, useRef, useState } from "react";
 import type { Image } from "../types.ts";
+import { getRandomGif } from "../utils/gifAPI.ts";
+import GifTile from "./GifTile.tsx";
+import Modal from "./Modal.tsx";
 
 interface Props {
 	selectedDay?: string;

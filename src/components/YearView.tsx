@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { getDaysInMonth } from "date-fns";
 import times from "lodash.times";
-import GifTile from "./GifTile.jsx";
+import { useState } from "react";
 import type { DailyGifs } from "../types.js";
+import GifTile from "./GifTile.jsx";
 
 interface Props {
 	dailyGifs: DailyGifs;
