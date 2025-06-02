@@ -19,6 +19,18 @@ Another idea could be serving static images and animating the gif on `hover` or 
 - Unit tests with [Vitest](https://vitest.dev) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - Integration test with [Playwright](https://playwright.dev/)
 
+### Previous version (tag 0.1)
+
+A version with the old stack is available at git tag `0.1`: [https://github.com/sirlisko/gifday/tree/0.1](https://github.com/sirlisko/gifday/tree/0.1)
+
+Old stack:
+
+- WebApp scaffolded via [Create React App](https://github.com/facebook/create-react-app)
+- Check the syntax and formatting of the JS, via [ESLint](http://eslint.org/) and [Prettier](https://prettier.io/)
+- Style components with [Emotion](https://emotion.sh)
+- Unit tests with [Jest](https://jestjs.io)
+- Integration test with [Cypress](https://cypress.io)
+
 ### Improvements
 
 - Proxy the API call in order not to expose the API key
