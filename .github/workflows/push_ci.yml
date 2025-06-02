@@ -29,6 +29,8 @@ jobs:
         run: pnpm typecheck
       - name: Run Unit Test
         run: pnpm unit
+      - name: Setup Environment
+        run: cp .env.example .env
       - name: Run E2E Test
         run: pnpm integration
         env:
