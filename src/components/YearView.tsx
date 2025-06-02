@@ -16,11 +16,11 @@ export const YearView = ({ dailyGifs, onSelectedDay }: Props) => {
 	);
 
 	return (
-		<table className="mx-auto md:block">
-			<tbody className="md:flex">
+		<table className="mx-auto block md:table">
+			<tbody className="flex md:block">
 				{dayOfTheMonth.map((days, monthIndex) => (
 					// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-					<tr key={monthIndex} className="md:flex md:flex-col">
+					<tr key={monthIndex} className="flex flex-col md:table-row">
 						{times(days).map((day) => {
 							const index = `${day}-${monthIndex}`;
 							return (
