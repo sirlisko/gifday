@@ -21,11 +21,15 @@ jobs:
         run: pnpm install
         env:
           CI: true
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
       - name: Run Lint
-        run: npm run lint
+        run: pnpm lint
+      - name: Run Typecheck
+        run: pnpm typecheck
       - name: Run Unit Test
-        run: npm run unit
+        run: pnpm unit
       - name: Run E2E Test
-        run: npm run integration
+        run: pnpm integration
         env:
           GIF_API_KEY: ${{ secrets.GIF_API_KEY }}

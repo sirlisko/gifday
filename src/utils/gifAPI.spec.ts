@@ -23,10 +23,8 @@ describe("getRandomGif", () => {
 		global.fetch = unmockedFetch;
 	});
 
-	it("should fetch a new gif if form submitted", (done) => {
-		getRandomGif("foo").then((gif) => {
-			expect(gif).toEqual({ gif: "foobar.mp4", still: "foobar.img" });
-			done();
-		});
+	it("should fetch a new gif if form submitted", async () => {
+		const gif = await getRandomGif("foo");
+		expect(gif).toEqual({ gif: "foobar.mp4", still: "foobar.img" });
 	});
 });

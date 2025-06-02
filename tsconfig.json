@@ -21,7 +21,11 @@
 		"erasableSyntaxOnly": true,
 		"noFallthroughCasesInSwitch": true,
 		"noUncheckedSideEffectImports": true,
-		"types": ["vitest/globals", "@testing-library/jest-dom", "cypress"]
+		"types": [
+			"vitest/globals",
+			"@testing-library/jest-dom/vitest",
+			"@playwright/test"
+		]
 	},
-	"include": ["src", "cypress"]
+	"include": ["src", "e2e"]
 }

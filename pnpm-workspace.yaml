@@ -4,5 +4,4 @@ ignoredBuiltDependencies:
 
 onlyBuiltDependencies:
   - '@biomejs/biome'
-  - cypress
   - esbuild
