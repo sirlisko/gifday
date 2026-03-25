@@ -20,13 +20,11 @@ const props = {
 describe("GifTile Component", () => {
 	it("should render properly", async () => {
 		render(<GifTile {...props} />);
-		expect(screen.getByTitle("foobar").innerHTML).toEqual(
-			'<source src="foobar.mp4" type="video/mp4">',
-		);
+		expect(screen.getByTitle("foobar")).toHaveAttribute("src", "foobar.mp4");
 	});
 
 	it("should render properly - dynamic", () => {
 		render(<GifTile {...props} dynamic />);
-		expect(screen.getByAltText("foobar")).toBeVisible();
+		expect(screen.getByTitle("foobar")).toHaveAttribute("src", "foobar.mp4");
 	});
 });

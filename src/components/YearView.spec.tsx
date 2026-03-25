@@ -8,6 +8,7 @@ describe("YearView Component", () => {
 	const props = {
 		dailyGifs: {},
 		onSelectedDay: vi.fn(),
+		onDeleteDay: vi.fn(),
 	};
 
 	afterEach(() => {

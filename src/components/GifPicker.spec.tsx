@@ -27,7 +27,7 @@ describe("GifPicker Component", () => {
 		fireEvent.change(screen.getByRole("textbox"), {
 			target: { value: "foobar" },
 		});
-		fireEvent.submit(screen.getByRole("button", { name: "yo!" }));
+		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
 		expect(await screen.findByTitle("foobar")).toBeVisible();
 		fireEvent.click(screen.getByRole("button", { name: "You Got It!" }));
 		expect(props.onClosePicker).toHaveBeenCalledWith({
@@ -48,7 +48,7 @@ describe("GifPicker Component", () => {
 		fireEvent.change(screen.getByRole("textbox"), {
 			target: { value: "foobar" },
 		});
-		fireEvent.submit(screen.getByRole("button", { name: "yo!" }));
-		expect(await screen.findByText("loading...")).toBeVisible();
+		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
+		expect(await screen.findByRole("status")).toBeInTheDocument();
 	});
 });

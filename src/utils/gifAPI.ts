@@ -1,5 +1,5 @@
 export const getRandomGif = (text: string) =>
-	fetch(`/.netlify/functions/gif?q=${encodeURIComponent(text)}`)
+	fetch(`${import.meta.env.VITE_GIF_API_GET_RANDOM}${encodeURIComponent(text)}`)
 		.then((response) => response.json())
 		.then(
 			({ data }) =>

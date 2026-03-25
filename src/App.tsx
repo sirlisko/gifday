@@ -1,9 +1,11 @@
 import type { User } from "@supabase/supabase-js";
+import { getDaysInYear } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import AuthModal from "./components/AuthModal";
 import GifPicker from "./components/GifPicker";
+import GifView from "./components/GifView";
 import YearView from "./components/YearView";
-import { loadGifs, saveGif } from "./lib/gifsDB";
+import { deleteGif, loadGifs, saveGif } from "./lib/gifsDB";
 import { supabase } from "./lib/supabase";
 import type { DailyGifs, Image } from "./types";
 
@@ -23,6 +25,7 @@ const App = () => {
 	const [user, setUser] = useState<User | null>(null);
 	const [dailyGifs, setDailyGifs] = useState<DailyGifs>({});
 	const [selectedDay, setSelectedDay] = useState<string>();
+	const [viewDay, setViewDay] = useState<string>();
 	const [showAuth, setShowAuth] = useState(false);
 	const [loading, setLoading] = useState(true);
 	// Prevents onAuthStateChange SIGNED_IN from double-running when OTP flow already called handleSignIn
@@ -99,13 +102,47 @@ const App = () => {
 		}
 	};
 
+	const handleDeleteGif = async (dayKey: string) => {
+		const prev = dailyGifs;
+		const updated = { ...dailyGifs };
+		delete updated[dayKey];
+		setDailyGifs(updated);
+		if (user) {
+			try {
+				await deleteGif(user.id, dayKey);
+			} catch {
+				setDailyGifs(prev);
+			}
+		} else {
+			localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updated));
+		}
+	};
+
+	const filled = Object.keys(dailyGifs).length;
+	const total = getDaysInYear(new Date());
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
+	useEffect(() => {
+		document.title = filled > 0 ? `GifDay (${filled}/${total})` : "GifDay";
+	}, [filled]);
+
 	if (loading) return null;
+
+	const isEmpty = filled === 0;
+	const progress = (filled / total) * 100;
 
 	return (
 		<div>
 			<header className="font-luckiest-guy text-center my-12">
 				<h1 className="text-5xl">Have a gify day!</h1>
-				<p>Your year in gifs...</p>
+				<p className="font-sans font-normal text-gray-400 mt-1">your year in gifs</p>
+				<div className="mx-auto mt-3 w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+					<div
+						className="h-full bg-gradient-to-r from-accent to-alternate rounded-full transition-all duration-500"
+						style={{ width: `${progress}%` }}
+					/>
+				</div>
+				<p className="font-sans font-normal text-xs text-gray-400 mt-1">{filled} / {total}</p>
 				{user ? (
 					<button
 						type="button"
@@ -132,10 +169,22 @@ const App = () => {
 				/>
 			)}
 
+			{viewDay && dailyGifs[viewDay] && (
+				<GifView
+					dayIndex={viewDay}
+					image={dailyGifs[viewDay]}
+					onClose={() => setViewDay(undefined)}
+					onDelete={handleDeleteGif}
+					onReplace={(index) => {
+						setViewDay(undefined);
+						setSelectedDay(index);
+					}}
+				/>
+			)}
+
 			{selectedDay && (
 				<GifPicker
 					selectedDay={selectedDay}
-					selectedImg={dailyGifs[selectedDay]}
 					onClosePicker={(image) =>
 						image ? handleSaveGif(image) : setSelectedDay(undefined)
 					}
@@ -143,7 +192,17 @@ const App = () => {
 			)}
 
 			<div className="min-h-[50vh]">
-				<YearView dailyGifs={dailyGifs} onSelectedDay={setSelectedDay} />
+				<YearView
+					dailyGifs={dailyGifs}
+					onSelectedDay={(index) =>
+						dailyGifs[index] ? setViewDay(index) : setSelectedDay(index)
+					}
+				/>
+				{isEmpty && (
+					<p className="text-center text-gray-400 text-sm mt-6 font-sans">
+						click any day to add a gif ↑
+					</p>
+				)}
 			</div>
 			<footer className="text-center mt-8">
 				<p>
