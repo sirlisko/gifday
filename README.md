@@ -4,21 +4,19 @@
 
 [https://gifday.netlify.com](https://gifday.netlify.com)
 
-## Motivation
+## What it does
 
-I take advantage of this little project to test out a bit more [React Hooks](https://reactjs.org/docs/hooks-intro.html), I hope I didn't make any mess 😅 and to (finally) give a spin to [Playwright](https://playwright.dev/) for the integration tests.
-Probably having a lot of gifs at the same time is not the best for page performance, using videos instead of images is improving the experience but it is still not good enough. Ideally, it would be better paginating them in month views, but this is going to lose a bit the "_wow effect_" on seeing a page crowded by gifs.
-Another idea could be serving static images and animating the gif on `hover` or having a sort of switch for "unleashing the beast" and activating all the gifs at the same time. But also this is losing a bit the "wow effect" mentioned ☝️
+Assign one GIF to each of the 365 days of the year and build your personal year in gifs. Click an empty day to search GIPHY and pick a GIF. Click a saved GIF to view it full-size or delete it. GIFs are stored locally or synced to your account across devices.
 
 ## The stack
 
-- WebApp scaffolded via [Vite](https://vite.dev)
-- Syntax and formatting via [Biome](https://biomejs.dev/)
-- Styling with [Tailwind](https://tailwindcss.com/)
-- [Giphy APIs](https://developers.giphy.com/docs/) for GIF data
-- Auth and database via [Supabase](https://supabase.com) (email OTP + Postgres)
-- Unit tests with [Vitest](https://vitest.dev) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
-- Integration tests with [Playwright](https://playwright.dev/)
+- [Vite](https://vite.dev) + [React 19](https://react.dev) + [TypeScript](https://www.typescriptlang.org/)
+- [Biome](https://biomejs.dev/) for linting and formatting
+- [Tailwind CSS](https://tailwindcss.com/) for styling
+- [GIPHY API](https://developers.giphy.com/docs/) for GIF data (proxied via Netlify function)
+- [Supabase](https://supabase.com) for auth (email OTP) and database (Postgres + RLS)
+- [Vitest](https://vitest.dev) + [react-testing-library](https://testing-library.com/docs/react-testing-library/intro) for unit tests
+- [Playwright](https://playwright.dev/) for integration tests
 - Hosted on [Netlify](https://netlify.com)
 
 ## Local development
