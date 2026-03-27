@@ -157,7 +157,9 @@ const App = () => {
 					>
 						←
 					</button>
-					<span className="font-black text-xl tabular-nums">{selectedYear}</span>
+					<span className="font-black text-xl tabular-nums">
+						{selectedYear}
+					</span>
 					<button
 						type="button"
 						onClick={() => setSelectedYear((y) => y + 1)}

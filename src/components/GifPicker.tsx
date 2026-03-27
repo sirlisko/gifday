@@ -88,6 +88,7 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 							strokeLinecap="round"
 							strokeLinejoin="round"
 							className="w-5 h-5"
+							aria-hidden="true"
 						>
 							<circle cx="11" cy="11" r="8" />
 							<line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -100,28 +101,29 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 					</div>
 				)}
 				{loading && (
-					<svg
-						role="status"
-						aria-label="loading"
-						className="mt-6 w-8 h-8 animate-spin text-brand-text/40"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 24 24"
-					>
-						<circle
-							className="opacity-25"
-							cx="12"
-							cy="12"
-							r="10"
-							stroke="currentColor"
-							strokeWidth="4"
-						/>
-						<path
-							className="opacity-75"
-							fill="currentColor"
-							d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-						/>
-					</svg>
+					<output aria-label="loading" className="mt-6 flex justify-center">
+						<svg
+							aria-hidden="true"
+							className="w-8 h-8 animate-spin text-brand-text/40"
+							xmlns="http://www.w3.org/2000/svg"
+							fill="none"
+							viewBox="0 0 24 24"
+						>
+							<circle
+								className="opacity-25"
+								cx="12"
+								cy="12"
+								r="10"
+								stroke="currentColor"
+								strokeWidth="4"
+							/>
+							<path
+								className="opacity-75"
+								fill="currentColor"
+								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+							/>
+						</svg>
+					</output>
 				)}
 				{image && (
 					<Fragment>
