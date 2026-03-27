@@ -39,9 +39,9 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 		return null;
 	}
 
-	const [dayStr, monthStr] = selectedDay.split("-");
+	const [dayStr, monthStr, yearStr] = selectedDay.split("-");
 	const dayDate = new Date(
-		new Date().getFullYear(),
+		Number(yearStr),
 		Number(monthStr),
 		Number(dayStr) + 1,
 	);

@@ -22,19 +22,22 @@ const MONTHS = [
 interface Props {
 	dailyGifs: DailyGifs;
 	onSelectedDay: (dayIndex: string) => void;
+	year: number;
 }
 
-export const YearView = ({ dailyGifs, onSelectedDay }: Props) => {
+export const YearView = ({ dailyGifs, onSelectedDay, year }: Props) => {
 	const [today] = useState(() => new Date());
-	const thisYear = today.getFullYear();
-	const todayIndex = `${today.getDate() - 1}-${today.getMonth()}`;
+	const isCurrentYear = year === today.getFullYear();
+	const todayIndex = `${today.getDate() - 1}-${today.getMonth()}-${year}`;
 	const dayOfTheMonth = times(12).map((month) =>
-		getDaysInMonth(new Date(thisYear, month)),
+		getDaysInMonth(new Date(year, month)),
 	);
 	const todayRef = useRef<HTMLButtonElement>(null);
 	useEffect(() => {
-		todayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-	}, []);
+		if (isCurrentYear) {
+			todayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+		}
+	}, [isCurrentYear]);
 
 	return (
 		<table className="mx-auto block md:table border-collapse">
@@ -47,8 +50,8 @@ export const YearView = ({ dailyGifs, onSelectedDay }: Props) => {
 							<span className="hidden md:inline">{MONTHS[monthIndex]}</span>
 						</td>
 						{times(days).map((day) => {
-							const index = `${day}-${monthIndex}`;
-							const isToday = index === todayIndex;
+							const index = `${day}-${monthIndex}-${year}`;
+							const isToday = isCurrentYear && index === todayIndex;
 							const hasgif = Boolean(dailyGifs[index]);
 							return (
 								<td key={index} className="m-0 p-[1px] align-top leading-none">

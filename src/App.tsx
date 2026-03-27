@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { getDaysInYear } from "date-fns";
+import { getDayOfYear, getDaysInYear } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import AuthModal from "./components/AuthModal";
 import GifPicker from "./components/GifPicker";
@@ -28,6 +28,8 @@ const App = () => {
 	const [viewDay, setViewDay] = useState<string>();
 	const [showAuth, setShowAuth] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const currentYear = new Date().getFullYear();
+	const [selectedYear, setSelectedYear] = useState(currentYear);
 	// Prevents onAuthStateChange SIGNED_IN from double-running when OTP flow already called handleSignIn
 	const handlingSignIn = useRef(false);
 
@@ -118,8 +120,13 @@ const App = () => {
 		}
 	};
 
-	const filled = Object.keys(dailyGifs).length;
-	const total = getDaysInYear(new Date());
+	const filled = Object.keys(dailyGifs).filter((k) =>
+		k.endsWith(`-${selectedYear}`),
+	).length;
+	const total =
+		selectedYear === currentYear
+			? getDayOfYear(new Date())
+			: getDaysInYear(new Date(selectedYear, 0, 1));
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
 	useEffect(() => {
@@ -141,7 +148,27 @@ const App = () => {
 					your year in gifs
 				</p>
 
-				<div className="mx-auto mt-4 w-56 h-3 bg-white border-2 border-black overflow-hidden shadow-[3px_3px_0_0_#000]">
+				<div className="flex items-center justify-center gap-4 mt-4">
+					<button
+						type="button"
+						onClick={() => setSelectedYear((y) => y - 1)}
+						className="text-xl font-black hover:text-primary transition-colors"
+						aria-label="Previous year"
+					>
+						←
+					</button>
+					<span className="font-black text-xl tabular-nums">{selectedYear}</span>
+					<button
+						type="button"
+						onClick={() => setSelectedYear((y) => y + 1)}
+						disabled={selectedYear >= currentYear}
+						className="text-xl font-black disabled:opacity-20 hover:text-primary transition-colors"
+						aria-label="Next year"
+					>
+						→
+					</button>
+				</div>
+				<div className="mx-auto mt-3 w-56 h-3 bg-white border-2 border-black overflow-hidden shadow-[3px_3px_0_0_#000]">
 					<div
 						className="h-full bg-primary transition-all duration-500"
 						style={{ width: `${progress}%` }}
@@ -204,6 +231,7 @@ const App = () => {
 			<div className="min-h-[50vh]">
 				<YearView
 					dailyGifs={dailyGifs}
+					year={selectedYear}
 					onSelectedDay={(index) =>
 						dailyGifs[index] ? setViewDay(index) : setSelectedDay(index)
 					}

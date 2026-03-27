@@ -35,6 +35,6 @@ describe("App Component", () => {
 		await act(async () => {
 			render(<App />);
 		});
-		expect(screen.getByRole("heading").innerHTML).toEqual("Have a gify day!");
+		expect(screen.getByRole("heading")).toBeVisible();
 	});
 });

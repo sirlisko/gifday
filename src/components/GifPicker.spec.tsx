@@ -14,7 +14,7 @@ vi.mock("../utils/gifAPI.ts", () => ({
 
 describe("GifPicker Component", () => {
 	const props = {
-		selectedDay: "0-0",
+		selectedDay: "0-0-2026",
 		onClosePicker: vi.fn(),
 	};
 
