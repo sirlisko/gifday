@@ -1,5 +1,4 @@
 import { act, render, screen } from "@testing-library/react";
-import { createRoot } from "react-dom/client";
 import { vi } from "vitest";
 
 vi.mock("./lib/supabase", () => ({
@@ -22,12 +21,9 @@ vi.mock("./lib/gifsDB", () => ({
 import App from "./App";
 
 it("renders without crashing", async () => {
-	const div = document.createElement("div");
-	const root = createRoot(div);
 	await act(async () => {
-		root.render(<App />);
+		render(<App />);
 	});
-	root.unmount();
 });
 
 describe("App Component", () => {

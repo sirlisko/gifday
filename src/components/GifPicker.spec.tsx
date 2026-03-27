@@ -49,6 +49,6 @@ describe("GifPicker Component", () => {
 			target: { value: "foobar" },
 		});
 		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
-		expect(await screen.findByRole("status")).toBeInTheDocument();
+		expect(await screen.findByLabelText("loading")).toBeInTheDocument();
 	});
 });
