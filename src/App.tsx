@@ -133,33 +133,43 @@ const App = () => {
 
 	return (
 		<div>
-			<header className="font-luckiest-guy text-center my-12">
-				<h1 className="text-5xl">Have a gify day!</h1>
-				<p className="font-sans font-normal text-gray-400 mt-1">your year in gifs</p>
-				<div className="mx-auto mt-3 w-48 h-1.5 bg-gray-100 rounded-full overflow-hidden">
+			<header className="text-center mt-12 mb-8">
+				<h1 className="text-6xl font-black uppercase tracking-tight text-brand-text leading-none">
+					Gif<span className="bg-primary px-1">Day</span>
+				</h1>
+				<p className="text-sm font-medium text-brand-text/50 mt-2 uppercase tracking-widest">
+					your year in gifs
+				</p>
+
+				<div className="mx-auto mt-4 w-56 h-3 bg-white border-2 border-black overflow-hidden shadow-[3px_3px_0_0_#000]">
 					<div
-						className="h-full bg-gradient-to-r from-accent to-alternate rounded-full transition-all duration-500"
+						className="h-full bg-primary transition-all duration-500"
 						style={{ width: `${progress}%` }}
 					/>
 				</div>
-				<p className="font-sans font-normal text-xs text-gray-400 mt-1">{filled} / {total}</p>
-				{user ? (
-					<button
-						type="button"
-						onClick={() => supabase.auth.signOut()}
-						className="text-xs font-sans font-normal text-gray-400 underline mt-1"
-					>
-						sign out
-					</button>
-				) : (
-					<button
-						type="button"
-						onClick={() => setShowAuth(true)}
-						className="text-xs font-sans font-normal text-gray-400 underline mt-1"
-					>
-						sign in to sync
-					</button>
-				)}
+				<p className="text-xs font-bold text-brand-text/50 mt-1 tabular-nums">
+					{filled} / {total}
+				</p>
+
+				<div className="mt-3">
+					{user ? (
+						<button
+							type="button"
+							onClick={() => supabase.auth.signOut()}
+							className="text-xs font-bold uppercase tracking-wider border-2 border-black px-3 py-1 bg-surface hover:bg-black hover:text-white transition-colors shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+						>
+							Sign out
+						</button>
+					) : (
+						<button
+							type="button"
+							onClick={() => setShowAuth(true)}
+							className="text-xs font-bold uppercase tracking-wider border-2 border-black px-3 py-1 bg-surface hover:bg-primary transition-colors shadow-[2px_2px_0_0_#000] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px]"
+						>
+							Sign in to sync
+						</button>
+					)}
+				</div>
 			</header>
 
 			{showAuth && (
@@ -199,19 +209,19 @@ const App = () => {
 					}
 				/>
 				{isEmpty && (
-					<p className="text-center text-gray-400 text-sm mt-6 font-sans">
+					<p className="text-center text-brand-text/40 text-sm mt-6 font-bold uppercase tracking-widest">
 						click any day to add a gif ↑
 					</p>
 				)}
 			</div>
-			<footer className="text-center mt-8">
+			<footer className="text-center mt-10 mb-8 text-xs font-medium text-brand-text/40 space-y-1">
 				<p>
 					Made with ♥ by{" "}
 					<a
 						href="https://sirlisko.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-current font-bold"
+						className="font-bold text-brand-text/60 underline"
 					>
 						Luca Lischetti (@sirLisko)
 					</a>
@@ -222,7 +232,7 @@ const App = () => {
 						href="https://giphy.com/"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="text-current font-bold"
+						className="font-bold text-brand-text/60 underline"
 					>
 						GIPHY
 					</a>

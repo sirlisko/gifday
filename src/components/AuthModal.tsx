@@ -55,31 +55,38 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 
 	return (
 		<Modal isModalOpen onClose={onClose}>
-			<div className="flex flex-col gap-6 pt-8">
-				<h2 className="font-luckiest-guy text-3xl text-center">Sign In</h2>
+			<div className="flex flex-col gap-6 pt-4">
+				<h2 className="text-3xl font-black uppercase tracking-tight">
+					Sign In
+				</h2>
 
 				{step === "email" ? (
-					<form onSubmit={sendCode} className="flex flex-col gap-6">
+					<form onSubmit={sendCode} className="flex flex-col gap-4">
 						<input
 							type="email"
-							placeholder="Email"
+							placeholder="your@email.com"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							className="border-0 border-b border-accent text-xl outline-accent py-1 px-2"
+							className="border-2 border-black text-lg font-medium outline-none py-2 px-3 bg-white focus:border-primary transition-colors shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px]"
 						/>
-						{error && <p className="text-sm text-accent">{error}</p>}
+						{error && (
+							<p className="text-sm font-bold text-danger border-2 border-danger bg-danger/10 px-3 py-2">
+								{error}
+							</p>
+						)}
 						<button
 							type="submit"
 							disabled={submitting}
-							className="bg-gradient-to-r from-accent to-alternate text-white py-3 px-8 uppercase font-bold border-none rounded-full tracking-widest hover:scale-105 transition-transform"
+							className="border-2 border-black py-3 px-8 font-black uppercase tracking-widest bg-primary shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							{submitting ? "..." : "Send Code"}
+							{submitting ? "Sending..." : "Send Code"}
 						</button>
 					</form>
 				) : (
-					<form onSubmit={verifyCode} className="flex flex-col gap-6">
-						<p className="text-sm text-gray-500 text-center">
-							We sent a code to <strong>{email}</strong>
+					<form onSubmit={verifyCode} className="flex flex-col gap-4">
+						<p className="text-sm font-medium text-brand-text/50">
+							We sent a code to{" "}
+							<strong className="text-brand-text">{email}</strong>
 						</p>
 						<input
 							type="text"
@@ -87,15 +94,19 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 							value={code}
 							onChange={(e) => setCode(e.target.value)}
 							maxLength={8}
-							className="border-0 border-b border-accent text-xl outline-accent py-1 px-2 tracking-widest text-center"
+							className="border-2 border-black text-lg font-mono font-bold tracking-[0.4em] text-center outline-none py-2 px-3 bg-white focus:border-primary transition-colors shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px]"
 						/>
-						{error && <p className="text-sm text-accent">{error}</p>}
+						{error && (
+							<p className="text-sm font-bold text-danger border-2 border-danger bg-danger/10 px-3 py-2">
+								{error}
+							</p>
+						)}
 						<button
 							type="submit"
 							disabled={submitting}
-							className="bg-gradient-to-r from-accent to-alternate text-white py-3 px-8 uppercase font-bold border-none rounded-full tracking-widest hover:scale-105 transition-transform"
+							className="border-2 border-black py-3 px-8 font-black uppercase tracking-widest bg-primary shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
 						>
-							{submitting ? "..." : "Verify"}
+							{submitting ? "Verifying..." : "Verify"}
 						</button>
 						<button
 							type="button"
@@ -104,7 +115,7 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 								setCode("");
 								setError(undefined);
 							}}
-							className="text-sm text-gray-500 text-center"
+							className="text-sm font-bold text-brand-text/40 hover:text-brand-text transition-colors underline"
 						>
 							Use a different email
 						</button>
