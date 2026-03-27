@@ -2,7 +2,7 @@
 
 > Your year in gifs...
 
-[https://gifday.netlify.com](https://gifday.netlify.com)
+[https://gifday.sirlisko.com](https://gifday.sirlisko.com)
 
 ## What it does
 
@@ -80,8 +80,8 @@ VITE_SUPABASE_ANON_KEY
 ```
 
 In Supabase → Authentication → URL Configuration, set:
-- **Site URL**: `https://gifday.netlify.com`
-- **Redirect URLs**: `https://gifday.netlify.com/**`
+- **Site URL**: `https://gifday.sirlisko.com`
+- **Redirect URLs**: `https://gifday.sirlisko.com/**`
 
 ## Previous version (tag 0.1)
 

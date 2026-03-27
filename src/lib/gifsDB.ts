@@ -14,10 +14,7 @@ export async function loadGifs(userId: string): Promise<DailyGifs> {
 	);
 }
 
-export async function deleteGif(
-	userId: string,
-	dayKey: string,
-): Promise<void> {
+export async function deleteGif(userId: string, dayKey: string): Promise<void> {
 	const { error } = await supabase
 		.from("daily_gifs")
 		.delete()

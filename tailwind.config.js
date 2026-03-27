@@ -4,12 +4,17 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				accent: "#FF6B6B",
-				alternate: "#4ECDC4",
-				"gray-light": "#E0E0E0",
+				primary: "#FDC800",
+				secondary: "#432DD7",
+				success: "#16A34A",
+				warning: "#D97706",
+				danger: "#DC2626",
+				surface: "#FBFBF9",
+				"brand-text": "#1C293C",
 			},
 			fontFamily: {
-				"luckiest-guy": ['"Luckiest Guy"', "cursive"],
+				sans: ['"Inter"', "system-ui", "sans-serif"],
+				mono: ['"JetBrains Mono"', "monospace"],
 			},
 		},
 	},

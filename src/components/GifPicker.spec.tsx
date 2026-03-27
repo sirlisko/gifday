@@ -14,7 +14,7 @@ vi.mock("../utils/gifAPI.ts", () => ({
 
 describe("GifPicker Component", () => {
 	const props = {
-		selectedDay: "0-0",
+		selectedDay: "0-0-2026",
 		onClosePicker: vi.fn(),
 	};
 
@@ -49,6 +49,6 @@ describe("GifPicker Component", () => {
 			target: { value: "foobar" },
 		});
 		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
-		expect(await screen.findByRole("status")).toBeInTheDocument();
+		expect(await screen.findByLabelText("loading")).toBeInTheDocument();
 	});
 });

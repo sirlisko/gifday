@@ -12,20 +12,22 @@ interface Props {
 const GifView = ({ dayIndex, image, onClose, onDelete, onReplace }: Props) => (
 	<Modal isModalOpen onClose={onClose}>
 		<div className="flex flex-col items-center gap-6">
-			<p className="font-luckiest-guy text-2xl text-gray-500">{image.text}</p>
+			<p className="text-sm font-black uppercase tracking-widest text-brand-text/50">
+				{image.text}
+			</p>
 			<video
 				src={image.gif.gif}
 				autoPlay
 				loop
 				muted
 				playsInline
-				className="mx-auto max-h-[60vh] max-w-full rounded-lg"
+				className="mx-auto max-h-[60vh] max-w-full border-2 border-black shadow-[4px_4px_0_0_#000]"
 			/>
-			<div className="flex gap-4">
+			<div className="flex gap-3">
 				<button
 					type="button"
 					onClick={() => onReplace(dayIndex)}
-					className="bg-transparent text-accent py-4 px-8 uppercase text-base font-bold border-2 border-accent rounded-full tracking-widest hover:scale-105 transition-transform"
+					className="border-2 border-black px-8 py-3 text-sm font-black uppercase tracking-widest bg-secondary text-white shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
 				>
 					Replace
 				</button>
@@ -35,7 +37,7 @@ const GifView = ({ dayIndex, image, onClose, onDelete, onReplace }: Props) => (
 						onDelete(dayIndex);
 						onClose();
 					}}
-					className="bg-transparent text-red-400 py-4 px-8 uppercase text-base font-bold border-2 border-red-300 rounded-full tracking-widest hover:bg-red-50 hover:scale-105 transition-transform"
+					className="border-2 border-danger px-8 py-3 text-sm font-black uppercase tracking-widest text-danger bg-surface shadow-[3px_3px_0_0_#DC2626] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
 				>
 					Delete
 				</button>
