@@ -1,4 +1,5 @@
 import type { Image } from "../types.ts";
+import { formatDayKey } from "../utils/dayKey.ts";
 import Modal from "./Modal.tsx";
 
 interface Props {
@@ -10,13 +11,18 @@ interface Props {
 }
 
 const GifView = ({ dayIndex, image, onClose, onDelete, onReplace }: Props) => (
-	<Modal isModalOpen onClose={onClose}>
+	<Modal
+		isModalOpen
+		label={`GIF for ${formatDayKey(dayIndex)}`}
+		onClose={onClose}
+	>
 		<div className="flex flex-col items-center gap-6">
 			<p className="text-sm font-black uppercase tracking-widest text-brand-text/50">
 				{image.text}
 			</p>
 			<video
 				src={image.gif.gif}
+				title={image.text}
 				autoPlay
 				loop
 				muted

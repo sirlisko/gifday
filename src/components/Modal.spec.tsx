@@ -6,6 +6,7 @@ import Modal from "./Modal";
 describe("Modal Component", () => {
 	const props = {
 		isModalOpen: true,
+		label: "Test dialog",
 		onClose: vi.fn(),
 	};
 

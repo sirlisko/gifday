@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
 import Modal from "./Modal";
 
@@ -14,6 +14,12 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 	const [step, setStep] = useState<"email" | "code">("email");
 	const [error, setError] = useState<string>();
 	const [submitting, setSubmitting] = useState(false);
+	const codeInput = useRef<HTMLInputElement>(null);
+
+	// The email form unmounts on submit, so move focus to the code field instead of the page
+	useEffect(() => {
+		if (step === "code") codeInput.current?.focus();
+	}, [step]);
 
 	const sendCode = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -54,7 +60,7 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 	};
 
 	return (
-		<Modal isModalOpen onClose={onClose}>
+		<Modal isModalOpen label="Sign in" onClose={onClose}>
 			<div className="flex flex-col gap-6 pt-4">
 				<h2 className="text-3xl font-black uppercase tracking-tight">
 					Sign In
@@ -64,6 +70,10 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 					<form onSubmit={sendCode} className="flex flex-col gap-4">
 						<input
 							type="email"
+							aria-label="Email"
+							autoComplete="email"
+							required
+							data-autofocus
 							placeholder="your@email.com"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -90,6 +100,10 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 						</p>
 						<input
 							type="text"
+							aria-label="Sign-in code"
+							inputMode="numeric"
+							autoComplete="one-time-code"
+							ref={codeInput}
 							placeholder="8-digit code"
 							value={code}
 							onChange={(e) => setCode(e.target.value)}

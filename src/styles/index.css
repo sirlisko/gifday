@@ -18,4 +18,8 @@
 	button {
 		@apply cursor-pointer;
 	}
+
+	:focus-visible {
+		@apply outline outline-[3px] outline-offset-2 outline-secondary;
+	}
 }

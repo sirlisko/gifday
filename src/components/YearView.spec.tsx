@@ -46,6 +46,25 @@ describe("YearView Component", () => {
 		).toBeVisible();
 	});
 
+	it("should label days with their date", () => {
+		mockdate.set("3/14/2019");
+		render(
+			<YearView
+				{...props}
+				dailyGifs={{
+					"0-0-2019": { gif: { gif: "bar", still: "" }, text: "pizza" },
+				}}
+				year={2019}
+			/>,
+		);
+		expect(
+			screen.getByRole("button", { name: "January 1, pizza" }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByRole("button", { name: "March 14, today" }),
+		).toBeInTheDocument();
+	});
+
 	it("should select the correct day", () => {
 		mockdate.set("1/1/2019");
 		const newProps = {

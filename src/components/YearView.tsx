@@ -2,6 +2,7 @@ import { getDaysInMonth } from "date-fns";
 import times from "lodash.times";
 import { useEffect, useRef, useState } from "react";
 import type { DailyGifs } from "../types.js";
+import { formatDayKey } from "../utils/dayKey.js";
 import GifTile from "./GifTile.jsx";
 
 const MONTHS = [
@@ -59,6 +60,13 @@ export const YearView = ({ dailyGifs, onSelectedDay, year }: Props) => {
 										ref={isToday ? todayRef : undefined}
 										type="button"
 										onClick={() => onSelectedDay(index)}
+										aria-label={[
+											formatDayKey(index),
+											hasgif && dailyGifs[index].text,
+											isToday && "today",
+										]
+											.filter(Boolean)
+											.join(", ")}
 										className={[
 											"block text-center p-0 m-0 overflow-hidden",
 											"h-[8vw] w-[8vw] md:h-[3vw] md:w-[3vw]",

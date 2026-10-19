@@ -1,5 +1,6 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import type { Image } from "../types.ts";
+import { formatDayKey } from "../utils/dayKey.ts";
 import { getRandomGif } from "../utils/gifAPI.ts";
 import Modal from "./Modal.tsx";
 
@@ -31,28 +32,17 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 	};
 
 	const textInput = useRef<HTMLInputElement>(null);
-	useEffect(() => {
-		textInput?.current?.focus();
-	}, []);
 
 	if (!selectedDay) {
 		return null;
 	}
 
-	const [dayStr, monthStr, yearStr] = selectedDay.split("-");
-	const dayDate = new Date(
-		Number(yearStr),
-		Number(monthStr),
-		Number(dayStr) + 1,
-	);
-	const dayLabel = dayDate.toLocaleDateString("en-US", {
-		month: "long",
-		day: "numeric",
-	});
+	const dayLabel = formatDayKey(selectedDay);
 
 	return (
 		<Modal
 			isModalOpen={Boolean(selectedDay)}
+			label={`Pick a GIF for ${dayLabel}`}
 			onClose={() => onClosePicker(selectedImg)}
 		>
 			<div className="flex flex-col items-center">
@@ -69,7 +59,9 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 					<input
 						type="text"
 						name="what"
+						aria-label="Search GIFs"
 						ref={textInput}
+						data-autofocus
 						defaultValue={image?.text}
 						placeholder="search for a gif..."
 						className="flex-1 border-b-2 border-black text-2xl font-medium outline-none py-2 px-1 bg-transparent placeholder:text-brand-text/25 focus:border-primary transition-colors"
