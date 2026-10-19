@@ -253,7 +253,7 @@ const App = () => {
 						rel="noopener noreferrer"
 						className="font-bold text-brand-text/60 underline"
 					>
-						Luca Lischetti (@sirLisko)
+						Luca Lischetti (@sirlisko)
 					</a>
 				</p>
 				<p>
