@@ -15,19 +15,19 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 	const [loading, setLoading] = useState<boolean>();
 	const getGif = (text: string) => {
 		setLoading(true);
+		setError(undefined);
 		getRandomGif(text)
 			.then((gif) => {
-				if (!gif) {
-					return setError("we didn't find your gif");
+				if (gif) {
+					setImage({ text, gif });
+				} else {
+					setError(`No GIFs found for “${text}”. Try another word.`);
 				}
-				setError(undefined);
-				setImage({ text, gif });
-				setLoading(false);
 			})
 			.catch(() => {
-				setError("Please try again later");
-				setLoading(false);
-			});
+				setError("Couldn't reach GIPHY. Check your connection and try again.");
+			})
+			.finally(() => setLoading(false));
 	};
 
 	const textInput = useRef<HTMLInputElement>(null);
@@ -96,8 +96,11 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 					</button>
 				</form>
 				{error && (
-					<div className="mt-4 w-full px-4 py-3 border-2 border-danger bg-danger/10 text-danger text-sm font-bold">
-						Oops! {error}
+					<div
+						role="alert"
+						className="mt-4 w-full px-4 py-3 border-2 border-danger bg-danger/10 text-danger text-sm font-bold"
+					>
+						{error}
 					</div>
 				)}
 				{loading && (
@@ -154,7 +157,7 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 										onClick={() => onClosePicker(image)}
 										className="border-2 border-black px-8 py-3 text-sm font-black uppercase tracking-widest bg-primary shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all"
 									>
-										You Got It!
+										Save GIF
 									</button>
 								</div>
 							</Fragment>
