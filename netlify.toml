@@ -11,6 +11,18 @@
   port = 8888
   targetPort = 5173
 
+# First-party paths so blockers leave analytics alone; the script posts to
+# /api/send next to wherever it was loaded from
+[[redirects]]
+  from = "/stats/script.js"
+  to = "https://stats.sirlisko.com/script.js"
+  status = 200
+
+[[redirects]]
+  from = "/stats/api/send"
+  to = "https://stats.sirlisko.com/api/send"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
