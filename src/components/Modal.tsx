@@ -39,14 +39,14 @@ const Modal = ({ isModalOpen, label, onClose, children }: Props) => {
 			onClick={(e) => {
 				if (e.target === e.currentTarget) onClose();
 			}}
-			className="w-full p-0 bg-surface text-brand-text border-[3px] border-black shadow-[8px_8px_0_0_#000] max-w-[640px] max-h-[95vh] backdrop:bg-black/60"
+			className="w-[calc(100%-2rem)] p-0 bg-surface text-brand-text border-[3px] border-black shadow-[8px_8px_0_0_#000] max-w-[640px] max-h-[95vh] backdrop:bg-brand-text/70"
 		>
 			<div className="relative p-8">
 				<button
 					type="button"
 					onClick={onClose}
 					aria-label="Close"
-					className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center border-2 border-black font-black text-lg bg-surface hover:bg-primary transition-colors leading-none"
+					className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center text-2xl leading-none text-brand-text/60 hover:text-brand-text"
 				>
 					×
 				</button>

@@ -16,9 +16,10 @@ interface Props {
 }
 
 const stateClasses: Record<DayState, string> = {
-	past: "border-black/15 bg-white text-brand-text/40 hover:border-black hover:text-brand-text",
-	today: "border-black bg-primary font-black shadow-[2px_2px_0_0_#000]",
-	future: "border-black/10 border-dashed text-brand-text/20 cursor-default",
+	past: "border-transparent bg-day text-brand-text/60 hover:border-black hover:text-brand-text",
+	today: "border-black bg-primary font-bold shadow-[2px_2px_0_0_#000]",
+	future:
+		"border-brand-text/15 border-dashed bg-transparent text-brand-text/30 cursor-default",
 };
 
 const DayButton = ({

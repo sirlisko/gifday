@@ -12,7 +12,7 @@ const Footer = () => (
 			</a>
 		</p>
 		<p>
-			Powered By{" "}
+			Powered by{" "}
 			<a
 				href="https://giphy.com/"
 				target="_blank"

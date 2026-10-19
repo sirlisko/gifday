@@ -94,6 +94,7 @@ const App = () => {
 			{selectedDay && (
 				<GifPicker
 					selectedDay={selectedDay}
+					selectedImg={dailyGifs[selectedDay]}
 					onClosePicker={(image) => {
 						if (image) save(selectedDay, image);
 						setSelectedDay(undefined);
@@ -101,7 +102,14 @@ const App = () => {
 				/>
 			)}
 
-			<div className="min-h-[50vh]">
+			<main className="min-h-[50vh]">
+				{filled === 0 && (
+					<p className="text-center text-brand-text/70 text-sm font-medium mb-6 px-4">
+						{selectedYear === currentYear
+							? "Start with today: it's the yellow square."
+							: "Pick any day to add its GIF."}
+					</p>
+				)}
 				<YearView
 					dailyGifs={dailyGifs}
 					year={selectedYear}
@@ -109,12 +117,7 @@ const App = () => {
 						dailyGifs[index] ? setViewDay(index) : setSelectedDay(index)
 					}
 				/>
-				{filled === 0 && (
-					<p className="text-center text-brand-text/40 text-sm mt-6 font-bold uppercase tracking-widest">
-						click any day to add a gif ↑
-					</p>
-				)}
-			</div>
+			</main>
 			<Footer />
 			<Toast toast={toast} onDismiss={dismissToast} />
 		</div>
