@@ -21,9 +21,25 @@ test.describe("The Web App", () => {
 		await expect(page.locator("video")).toBeVisible();
 	});
 
-	test("shows the still in the grid and plays it on hover", async ({
+	test("plays saved GIFs that are on screen", async ({ page }) => {
+		await page.route(/\/\.netlify\/functions\/gif/, (route) =>
+			route.fulfill({ json: giphyResponse }),
+		);
+		await page.goto("/");
+		const firstDay = page.locator("table button").first();
+		await firstDay.click();
+		await page.getByLabel("Search GIFs").fill("pizza");
+		await page.getByLabel("Search GIFs").press("Enter");
+		await page.getByRole("button", { name: "Save GIF" }).click();
+		await firstDay.blur();
+		await page.mouse.move(0, 0);
+		await expect(firstDay.locator("video")).toBeAttached();
+	});
+
+	test("shows the still with reduced motion and plays it on hover", async ({
 		page,
 	}) => {
+		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.route(/\/\.netlify\/functions\/gif/, (route) =>
 			route.fulfill({ json: giphyResponse }),
 		);
