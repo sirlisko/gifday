@@ -8,6 +8,7 @@ import {
 } from "../lib/localGifs";
 import { supabase } from "../lib/supabase";
 import type { DailyGifs, Image } from "../types";
+import { track } from "../utils/analytics";
 
 async function syncLocalGifs(user: User): Promise<DailyGifs> {
 	const local = readLocalGifs();
@@ -59,6 +60,7 @@ export function useDailyGifs(onError: (message: string) => void) {
 
 	const signIn = async (signedInUser: User) => {
 		handlingSignIn.current = true;
+		track("sign-in");
 		await loadSignedIn(signedInUser);
 		handlingSignIn.current = false;
 	};

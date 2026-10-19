@@ -78,6 +78,7 @@ The app deploys automatically to Netlify on push to `main`. Set the following en
 GIF_API_GET_RANDOM
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
+VITE_UMAMI_WEBSITE_ID   # optional, enables Umami analytics (self-hosted at stats.sirlisko.com)
 ```
 
 In Supabase → Authentication → URL Configuration, set:

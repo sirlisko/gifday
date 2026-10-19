@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 
+import { track } from "../utils/analytics.ts";
 import { getRandomGif } from "../utils/gifAPI.ts";
 import GifPicker from "./GifPicker";
 
@@ -14,6 +15,8 @@ vi.mock("../utils/gifAPI.ts", () => ({
 			}),
 	),
 }));
+
+vi.mock("../utils/analytics.ts", () => ({ track: vi.fn() }));
 
 describe("GifPicker Component", () => {
 	const props = {
@@ -58,5 +61,6 @@ describe("GifPicker Component", () => {
 			"No GIFs found for “zzz”",
 		);
 		expect(screen.queryByLabelText("loading")).not.toBeInTheDocument();
+		expect(track).toHaveBeenCalledWith("search-no-results");
 	});
 });
