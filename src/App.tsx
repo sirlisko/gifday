@@ -1,17 +1,23 @@
 import type { User } from "@supabase/supabase-js";
 import { getDayOfYear, getDaysInYear } from "date-fns";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AuthModal from "./components/AuthModal";
 import Footer from "./components/Footer";
 import GifPicker from "./components/GifPicker";
 import GifView from "./components/GifView";
 import Header from "./components/Header";
+import Toast, { type ToastMessage } from "./components/Toast";
 import YearView from "./components/YearView";
 import { useDailyGifs } from "./hooks/useDailyGifs";
+import type { Image } from "./types";
+import { formatDayKey } from "./utils/dayKey";
 
 const App = () => {
+	const [toast, setToast] = useState<ToastMessage>();
+	const dismissToast = useCallback(() => setToast(undefined), []);
+	const showError = useCallback((text: string) => setToast({ text }), []);
 	const { user, dailyGifs, loading, signIn, signOut, save, remove } =
-		useDailyGifs();
+		useDailyGifs(showError);
 	const [selectedDay, setSelectedDay] = useState<string>();
 	const [viewDay, setViewDay] = useState<string>();
 	const [showAuth, setShowAuth] = useState(false);
@@ -21,6 +27,14 @@ const App = () => {
 	const handleSignIn = async (signedInUser: User) => {
 		await signIn(signedInUser);
 		setShowAuth(false);
+	};
+
+	const handleDelete = (dayKey: string, image: Image) => {
+		remove(dayKey);
+		setToast({
+			text: `Deleted the GIF for ${formatDayKey(dayKey)}`,
+			action: { label: "Undo", onClick: () => save(dayKey, image) },
+		});
 	};
 
 	const filled = Object.keys(dailyGifs).filter((k) =>
@@ -63,7 +77,7 @@ const App = () => {
 					dayIndex={viewDay}
 					image={dailyGifs[viewDay]}
 					onClose={() => setViewDay(undefined)}
-					onDelete={remove}
+					onDelete={() => handleDelete(viewDay, dailyGifs[viewDay])}
 					onReplace={(index) => {
 						setViewDay(undefined);
 						setSelectedDay(index);
@@ -96,6 +110,7 @@ const App = () => {
 				)}
 			</div>
 			<Footer />
+			<Toast toast={toast} onDismiss={dismissToast} />
 		</div>
 	);
 };

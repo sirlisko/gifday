@@ -9,47 +9,69 @@ import {
 import { supabase } from "../lib/supabase";
 import type { DailyGifs, Image } from "../types";
 
-export function useDailyGifs() {
+async function syncLocalGifs(user: User): Promise<DailyGifs> {
+	const local = readLocalGifs();
+	const dbGifs = await loadGifs(user.id);
+	await Promise.all(
+		Object.entries(local).map(([dayKey, image]) =>
+			saveGif(user.id, dayKey, image),
+		),
+	);
+	clearLocalGifs();
+	return { ...dbGifs, ...local };
+}
+
+export function useDailyGifs(onError: (message: string) => void) {
 	const [user, setUser] = useState<User | null>(null);
 	const [dailyGifs, setDailyGifs] = useState<DailyGifs>({});
 	const [loading, setLoading] = useState(true);
+	// Undo and rollbacks run after other updates, so they must not read a stale render's state
+	const gifsRef = useRef<DailyGifs>({});
 	// Prevents onAuthStateChange SIGNED_IN from double-running when OTP flow already called signIn
 	const handlingSignIn = useRef(false);
 
-	const signIn = async (signedInUser: User) => {
-		handlingSignIn.current = true;
+	const commit = (gifs: DailyGifs) => {
+		gifsRef.current = gifs;
+		setDailyGifs(gifs);
+	};
+
+	const setDay = (dayKey: string, image: Image | undefined) => {
+		const updated = { ...gifsRef.current };
+		if (image) updated[dayKey] = image;
+		else delete updated[dayKey];
+		commit(updated);
+		return updated;
+	};
+
+	// Local GIFs left over from a failed sync are retried on the next sign-in or page load
+	const loadSignedIn = async (signedInUser: User) => {
 		try {
-			const local = readLocalGifs();
-			const dbGifs = await loadGifs(signedInUser.id);
-			const merged = { ...dbGifs, ...local };
-			const localEntries = Object.entries(local);
-			if (localEntries.length > 0) {
-				await Promise.all(
-					localEntries.map(([dayKey, image]) =>
-						saveGif(signedInUser.id, dayKey, image),
-					),
-				);
-			}
-			clearLocalGifs();
-			setDailyGifs(merged);
+			commit(await syncLocalGifs(signedInUser));
 		} catch (e) {
 			console.error("Sync failed:", e);
-			setDailyGifs(readLocalGifs());
+			commit(readLocalGifs());
+			onError(
+				"Couldn't load your synced GIFs. Showing the ones saved on this device.",
+			);
 		}
 		setUser(signedInUser);
+	};
+
+	const signIn = async (signedInUser: User) => {
+		handlingSignIn.current = true;
+		await loadSignedIn(signedInUser);
 		handlingSignIn.current = false;
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: subscribe once on mount
 	useEffect(() => {
-		supabase.auth.getSession().then(({ data }) => {
-			const sessionUser = data.session?.user ?? null;
+		supabase.auth.getSession().then(async ({ data }) => {
+			const sessionUser = data.session?.user;
 			if (sessionUser) {
-				loadGifs(sessionUser.id).then(setDailyGifs).catch(console.error);
+				await loadSignedIn(sessionUser);
 			} else {
-				setDailyGifs(readLocalGifs());
+				commit(readLocalGifs());
 			}
-			setUser(sessionUser);
 			setLoading(false);
 		});
 
@@ -57,7 +79,7 @@ export function useDailyGifs() {
 			(event, session) => {
 				if (event === "SIGNED_OUT") {
 					setUser(null);
-					setDailyGifs(readLocalGifs());
+					commit(readLocalGifs());
 				}
 				// Magic link sign-in; the OTP flow calls signIn directly
 				if (event === "SIGNED_IN" && session?.user && !handlingSignIn.current) {
@@ -68,36 +90,31 @@ export function useDailyGifs() {
 		return () => listener.subscription.unsubscribe();
 	}, []);
 
-	const save = async (dayKey: string, image: Image) => {
-		const prev = dailyGifs;
-		const updated = { ...dailyGifs, [dayKey]: image };
-		setDailyGifs(updated);
-		if (user) {
-			try {
-				await saveGif(user.id, dayKey, image);
-			} catch {
-				setDailyGifs(prev);
-			}
-		} else {
+	const persist = async (
+		dayKey: string,
+		image: Image | undefined,
+		failure: string,
+	) => {
+		const previous = gifsRef.current[dayKey];
+		const updated = setDay(dayKey, image);
+		if (!user) {
 			writeLocalGifs(updated);
+			return;
+		}
+		try {
+			if (image) await saveGif(user.id, dayKey, image);
+			else await deleteGif(user.id, dayKey);
+		} catch {
+			setDay(dayKey, previous);
+			onError(failure);
 		}
 	};
 
-	const remove = async (dayKey: string) => {
-		const prev = dailyGifs;
-		const updated = { ...dailyGifs };
-		delete updated[dayKey];
-		setDailyGifs(updated);
-		if (user) {
-			try {
-				await deleteGif(user.id, dayKey);
-			} catch {
-				setDailyGifs(prev);
-			}
-		} else {
-			writeLocalGifs(updated);
-		}
-	};
+	const save = (dayKey: string, image: Image) =>
+		persist(dayKey, image, "Couldn't save your GIF. Try again.");
+
+	const remove = (dayKey: string) =>
+		persist(dayKey, undefined, "Couldn't delete your GIF. Try again.");
 
 	const signOut = () => supabase.auth.signOut();
 
