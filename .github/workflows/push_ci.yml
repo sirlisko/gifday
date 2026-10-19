@@ -33,8 +33,6 @@ jobs:
         run: cp .env.example .env
       - name: Run E2E Test
         run: pnpm integration
-        env:
-          GIF_API_KEY: ${{ secrets.GIF_API_KEY }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

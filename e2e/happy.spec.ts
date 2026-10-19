@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test.describe("The Web App", () => {
 	test("successfully selected a gif", async ({ page }) => {
-		await page.route(/giphy\.com/, (route) =>
+		await page.route(/\/\.netlify\/functions\/gif/, (route) =>
 			route.fulfill({
 				status: 200,
 				contentType: "application/json",
