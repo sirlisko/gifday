@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { field, primaryButton, secondaryButton } from "../styles/buttons.ts";
 import type { Image } from "../types.ts";
+import { track } from "../utils/analytics.ts";
 import { formatDayKey } from "../utils/dayKey.ts";
 import { getRandomGif } from "../utils/gifAPI.ts";
 import Modal from "./Modal.tsx";
@@ -25,6 +26,7 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 				if (gif) {
 					setImage({ text, gif });
 				} else {
+					track("search-no-results");
 					setError(`No GIFs found for “${text}”. Try another word.`);
 				}
 			})
@@ -131,9 +133,10 @@ const GifPicker = ({ selectedDay, selectedImg, onClosePicker }: Props) => {
 						<div className="flex gap-3">
 							<button
 								type="button"
-								onClick={() =>
-									getGif(textInput.current?.value.trim() || image.text)
-								}
+								onClick={() => {
+									track("try-another");
+									getGif(textInput.current?.value.trim() || image.text);
+								}}
 								className={secondaryButton}
 							>
 								Try another

@@ -1,5 +1,5 @@
 import type { User } from "@supabase/supabase-js";
-import { getDayOfYear, getDaysInYear } from "date-fns";
+import { getDayOfYear, getDaysInYear, isToday } from "date-fns";
 import { useCallback, useEffect, useState } from "react";
 import AuthModal from "./components/AuthModal";
 import Footer from "./components/Footer";
@@ -10,7 +10,8 @@ import Toast, { type ToastMessage } from "./components/Toast";
 import YearView from "./components/YearView";
 import { useDailyGifs } from "./hooks/useDailyGifs";
 import type { Image } from "./types";
-import { formatDayKey } from "./utils/dayKey";
+import { track } from "./utils/analytics";
+import { formatDayKey, parseDayKey } from "./utils/dayKey";
 
 const App = () => {
 	const [toast, setToast] = useState<ToastMessage>();
@@ -33,7 +34,13 @@ const App = () => {
 		remove(dayKey);
 		setToast({
 			text: `Deleted the GIF for ${formatDayKey(dayKey)}`,
-			action: { label: "Undo", onClick: () => save(dayKey, image) },
+			action: {
+				label: "Undo",
+				onClick: () => {
+					track("undo-delete");
+					save(dayKey, image);
+				},
+			},
 		});
 	};
 
@@ -96,7 +103,13 @@ const App = () => {
 					selectedDay={selectedDay}
 					selectedImg={dailyGifs[selectedDay]}
 					onClosePicker={(image) => {
-						if (image) save(selectedDay, image);
+						if (image) {
+							track("gif-saved", {
+								day: isToday(parseDayKey(selectedDay)) ? "today" : "past",
+								replaced: dailyGifs[selectedDay] ? "yes" : "no",
+							});
+							save(selectedDay, image);
+						}
 						setSelectedDay(undefined);
 					}}
 				/>
