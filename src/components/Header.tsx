@@ -1,6 +1,7 @@
 interface Props {
 	year: number;
-	currentYear: number;
+	minYear: number;
+	maxYear: number;
 	onYearChange: (year: number) => void;
 	filled: number;
 	total: number;
@@ -11,7 +12,8 @@ interface Props {
 
 const Header = ({
 	year,
-	currentYear,
+	minYear,
+	maxYear,
 	onYearChange,
 	filled,
 	total,
@@ -34,7 +36,8 @@ const Header = ({
 				<button
 					type="button"
 					onClick={() => onYearChange(year - 1)}
-					className="text-xl font-black hover:text-primary transition-colors"
+					disabled={year <= minYear}
+					className="text-xl font-black disabled:opacity-20 hover:text-primary transition-colors"
 					aria-label="Previous year"
 				>
 					←
@@ -43,7 +46,7 @@ const Header = ({
 				<button
 					type="button"
 					onClick={() => onYearChange(year + 1)}
-					disabled={year >= currentYear}
+					disabled={year >= maxYear}
 					className="text-xl font-black disabled:opacity-20 hover:text-primary transition-colors"
 					aria-label="Next year"
 				>

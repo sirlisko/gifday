@@ -45,10 +45,15 @@ const App = () => {
 			? getDayOfYear(new Date())
 			: getDaysInYear(new Date(selectedYear, 0, 1));
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: intentional
+	// Browsing back stops at last year, or the earliest year that has GIFs
+	const minYear = Math.min(
+		currentYear - 1,
+		...Object.keys(dailyGifs).map((k) => Number(k.split("-")[2])),
+	);
+
 	useEffect(() => {
 		document.title = filled > 0 ? `GifDay (${filled}/${total})` : "GifDay";
-	}, [filled]);
+	}, [filled, total]);
 
 	if (loading) return null;
 
@@ -56,7 +61,8 @@ const App = () => {
 		<div>
 			<Header
 				year={selectedYear}
-				currentYear={currentYear}
+				minYear={minYear}
+				maxYear={currentYear}
 				onYearChange={setSelectedYear}
 				filled={filled}
 				total={total}
