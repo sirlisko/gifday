@@ -34,6 +34,7 @@ export const YearView = ({ dailyGifs, onSelectedDay, year }: Props) => {
 		getDaysInMonth(new Date(year, month)),
 	);
 	const todayRef = useRef<HTMLButtonElement>(null);
+	const [activeDay, setActiveDay] = useState<string>();
 	useEffect(() => {
 		if (isCurrentYear) {
 			todayRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -60,6 +61,10 @@ export const YearView = ({ dailyGifs, onSelectedDay, year }: Props) => {
 										ref={isToday ? todayRef : undefined}
 										type="button"
 										onClick={() => onSelectedDay(index)}
+										onMouseEnter={() => setActiveDay(index)}
+										onMouseLeave={() => setActiveDay(undefined)}
+										onFocus={() => setActiveDay(index)}
+										onBlur={() => setActiveDay(undefined)}
 										aria-label={[
 											formatDayKey(index),
 											hasgif && dailyGifs[index].text,
@@ -80,7 +85,10 @@ export const YearView = ({ dailyGifs, onSelectedDay, year }: Props) => {
 										].join(" ")}
 									>
 										{hasgif ? (
-											<GifTile gifObj={dailyGifs[index]} />
+											<GifTile
+												gifObj={dailyGifs[index]}
+												playing={activeDay === index}
+											/>
 										) : (
 											`${day + 1}`
 										)}
