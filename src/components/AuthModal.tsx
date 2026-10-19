@@ -1,6 +1,7 @@
 import type { User } from "@supabase/supabase-js";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../lib/supabase";
+import { field, primaryButton, textButton } from "../styles/buttons";
 import Modal from "./Modal";
 
 interface Props {
@@ -14,6 +15,12 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 	const [step, setStep] = useState<"email" | "code">("email");
 	const [error, setError] = useState<string>();
 	const [submitting, setSubmitting] = useState(false);
+	const codeInput = useRef<HTMLInputElement>(null);
+
+	// The email form unmounts on submit, so move focus to the code field instead of the page
+	useEffect(() => {
+		if (step === "code") codeInput.current?.focus();
+	}, [step]);
 
 	const sendCode = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -47,66 +54,79 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 			if (user) {
 				onSuccess(user);
 			} else {
-				setError("Sign in failed, please try again.");
+				setError("That code didn't work. Check it and try again.");
 			}
 		}
 		setSubmitting(false);
 	};
 
+	const errorMessage = error && (
+		<p
+			role="alert"
+			className="text-sm font-semibold text-danger border-2 border-danger bg-danger/10 px-3 py-2"
+		>
+			{error}
+		</p>
+	);
+
 	return (
-		<Modal isModalOpen onClose={onClose}>
-			<div className="flex flex-col gap-6 pt-4">
-				<h2 className="text-3xl font-black uppercase tracking-tight">
-					Sign In
-				</h2>
+		<Modal isModalOpen label="Sign in" onClose={onClose}>
+			<div className="flex flex-col gap-6">
+				<div>
+					<h2 className="font-display text-3xl">Sign in</h2>
+					<p className="text-sm font-medium text-brand-text/60 mt-2 max-w-sm">
+						We'll email you a code. Once you're in, your GIFs are saved to your
+						account and show up on every device.
+					</p>
+				</div>
 
 				{step === "email" ? (
 					<form onSubmit={sendCode} className="flex flex-col gap-4">
 						<input
 							type="email"
-							placeholder="your@email.com"
+							aria-label="Email"
+							autoComplete="email"
+							required
+							data-autofocus
+							placeholder="you@example.com"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							className="border-2 border-black text-lg font-medium outline-none py-2 px-3 bg-white focus:border-primary transition-colors shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px]"
+							className={field}
 						/>
-						{error && (
-							<p className="text-sm font-bold text-danger border-2 border-danger bg-danger/10 px-3 py-2">
-								{error}
-							</p>
-						)}
+						{errorMessage}
 						<button
 							type="submit"
 							disabled={submitting}
-							className="border-2 border-black py-3 px-8 font-black uppercase tracking-widest bg-primary shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+							className={primaryButton}
 						>
-							{submitting ? "Sending..." : "Send Code"}
+							{submitting ? "Sending code…" : "Email me a code"}
 						</button>
 					</form>
 				) : (
 					<form onSubmit={verifyCode} className="flex flex-col gap-4">
-						<p className="text-sm font-medium text-brand-text/50">
-							We sent a code to{" "}
-							<strong className="text-brand-text">{email}</strong>
+						<p className="text-sm font-medium text-brand-text/60">
+							Enter the code we sent to{" "}
+							<strong className="text-brand-text">{email}</strong>.
 						</p>
 						<input
 							type="text"
+							aria-label="Sign-in code"
+							inputMode="numeric"
+							autoComplete="one-time-code"
+							ref={codeInput}
 							placeholder="8-digit code"
 							value={code}
 							onChange={(e) => setCode(e.target.value)}
 							maxLength={8}
-							className="border-2 border-black text-lg font-mono font-bold tracking-[0.4em] text-center outline-none py-2 px-3 bg-white focus:border-primary transition-colors shadow-[2px_2px_0_0_#000] focus:shadow-none focus:translate-x-[2px] focus:translate-y-[2px]"
+							className={`${field} font-bold tabular-nums tracking-[0.4em] text-center`}
 						/>
-						{error && (
-							<p className="text-sm font-bold text-danger border-2 border-danger bg-danger/10 px-3 py-2">
-								{error}
-							</p>
-						)}
+						{errorMessage}
 						<button
 							type="submit"
 							disabled={submitting}
-							className="border-2 border-black py-3 px-8 font-black uppercase tracking-widest bg-primary shadow-[3px_3px_0_0_#000] hover:shadow-none hover:translate-x-[3px] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+							className={primaryButton}
 						>
-							{submitting ? "Verifying..." : "Verify"}
+							{submitting ? "Signing in…" : "Sign in"}
 						</button>
 						<button
 							type="button"
@@ -115,7 +135,7 @@ const AuthModal = ({ onClose, onSuccess }: Props) => {
 								setCode("");
 								setError(undefined);
 							}}
-							className="text-sm font-bold text-brand-text/40 hover:text-brand-text transition-colors underline"
+							className={textButton}
 						>
 							Use a different email
 						</button>

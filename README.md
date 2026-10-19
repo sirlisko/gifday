@@ -23,15 +23,15 @@ Assign one GIF to each of the 365 days of the year and build your personal year 
 
 ### Environment variables
 
-Create a `.env.local` file:
+Create a `.env` file (see `.env.example`):
 
 ```sh
-VITE_GIF_API_GET_RANDOM=https://api.giphy.com/v1/gifs/random?api_key={your_giphy_key}&rating=g
+GIF_API_GET_RANDOM=https://api.giphy.com/v1/gifs/random?api_key={your_giphy_key}&rating=g&tag=
 VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
 VITE_SUPABASE_ANON_KEY=<your-supabase-anon-key>
 ```
 
-- **GIPHY API key**: [https://developers.giphy.com/dashboard/](https://developers.giphy.com/dashboard/)
+- **GIPHY API key**: [https://developers.giphy.com/dashboard/](https://developers.giphy.com/dashboard/). It is only read by the Netlify function (`netlify/functions/gif.ts`), so it never reaches the browser.
 - **Supabase keys**: Project → Settings → API
 
 ### Database setup
@@ -60,7 +60,8 @@ create policy "Users manage their own gifs"
 ### Commands
 
 ```bash
-pnpm dev          # Start dev server (http://localhost:5173)
+netlify dev      # App + GIF function (http://localhost:8888), needed for GIF search
+pnpm dev          # Vite only (http://localhost:5173), GIF search won't work
 pnpm build        # TypeScript check + Vite build
 pnpm lint         # Run Biome linter
 pnpm format       # Auto-format with Biome
@@ -74,7 +75,7 @@ pnpm test         # Run lint + unit + integration
 The app deploys automatically to Netlify on push to `main`. Set the following environment variables in the Netlify dashboard:
 
 ```
-VITE_GIF_API_GET_RANDOM
+GIF_API_GET_RANDOM
 VITE_SUPABASE_URL
 VITE_SUPABASE_ANON_KEY
 ```

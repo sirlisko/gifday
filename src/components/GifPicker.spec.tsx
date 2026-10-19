@@ -1,15 +1,18 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { vi } from "vitest";
 
+import { getRandomGif } from "../utils/gifAPI.ts";
 import GifPicker from "./GifPicker";
 
 vi.mock("../utils/gifAPI.ts", () => ({
-	getRandomGif: () =>
-		new Promise((resolve) => {
-			setTimeout(() => {
-				resolve({ gif: "foobar.mp4", still: "foobar.img" });
-			}, 10);
-		}),
+	getRandomGif: vi.fn(
+		() =>
+			new Promise((resolve) => {
+				setTimeout(() => {
+					resolve({ gif: "foobar.mp4", still: "foobar.img" });
+				}, 10);
+			}),
+	),
 }));
 
 describe("GifPicker Component", () => {
@@ -19,17 +22,13 @@ describe("GifPicker Component", () => {
 	};
 
 	it("should fetch a new gif if form submitted", async () => {
-		render(
-			<GifPicker {...props}>
-				<div>foo</div>
-			</GifPicker>,
-		);
+		render(<GifPicker {...props} />);
 		fireEvent.change(screen.getByRole("textbox"), {
 			target: { value: "foobar" },
 		});
 		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
 		expect(await screen.findByTitle("foobar")).toBeVisible();
-		fireEvent.click(screen.getByRole("button", { name: "You Got It!" }));
+		fireEvent.click(screen.getByRole("button", { name: "Save GIF" }));
 		expect(props.onClosePicker).toHaveBeenCalledWith({
 			gif: {
 				gif: "foobar.mp4",
@@ -40,15 +39,24 @@ describe("GifPicker Component", () => {
 	});
 
 	it("should show loading spinner when fetching", async () => {
-		render(
-			<GifPicker {...props}>
-				<div>foo</div>
-			</GifPicker>,
-		);
+		render(<GifPicker {...props} />);
 		fireEvent.change(screen.getByRole("textbox"), {
 			target: { value: "foobar" },
 		});
 		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
 		expect(await screen.findByLabelText("loading")).toBeInTheDocument();
+	});
+
+	it("should stop loading and explain when nothing is found", async () => {
+		vi.mocked(getRandomGif).mockResolvedValueOnce(undefined);
+		render(<GifPicker {...props} />);
+		fireEvent.change(screen.getByRole("textbox"), {
+			target: { value: "zzz" },
+		});
+		fireEvent.submit(screen.getByRole("button", { name: "Search" }));
+		expect(await screen.findByRole("alert")).toHaveTextContent(
+			"No GIFs found for “zzz”",
+		);
+		expect(screen.queryByLabelText("loading")).not.toBeInTheDocument();
 	});
 });
